@@ -1,17 +1,20 @@
+// How our data is saved in this application.
+// How the 'fields' are...
+
 import { uuid } from "uuidv4";
 
 class Appointment {
-   id: string;
+  id: string;
 
-   provider: string;
+  provider: string;
 
-   date: Date;
+  date: Date;
 
-   constructor({ provider, date }: Omit<Appointment, "id">) {
-      this.id = uuid();
-      this.provider = provider;
-      this.date = date;
-   }
+  constructor({ provider, date }: Omit<Appointment, "id">) {
+    this.id = uuid();
+    this.provider = provider;
+    this.date = date;
+  }
 }
 
 export default Appointment;
