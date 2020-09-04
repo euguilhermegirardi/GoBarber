@@ -4,11 +4,11 @@ import { getCustomRepository } from "typeorm";
 
 import AppointmentsRepository from "../repositories/AppointmentsRepository";
 import CreateAppointmentService from "../services/CreateAppointmentService";
+import ensureAuthenticated from "../middleware/ensureAuthenticated";
 
 const appointmentsRouter = Router();
 
-// DTO - Data Transfer Object
-// Routes duty: Receive some requisition and return an answer!
+appointmentsRouter.use(ensureAuthenticated);
 
 appointmentsRouter.get("/", async (request, response) => {
   const appointmentsRepository = getCustomRepository(AppointmentsRepository);
