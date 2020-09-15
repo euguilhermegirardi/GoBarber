@@ -20,6 +20,7 @@ export const Container = styled.div`
     transform: translateX(-50%);
     color: #312e38;
 
+    /* Half arrow down */
     &::before {
       content: "";
       position: absolute;
