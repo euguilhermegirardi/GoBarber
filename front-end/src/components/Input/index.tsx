@@ -8,6 +8,7 @@ import React, {
 import { IconBaseProps } from "react-icons";
 import { FiAlertCircle } from "react-icons/fi";
 import { useField } from "@unform/core";
+
 import { Container, Error } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -45,6 +46,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, ...rest }) => {
   }, []);
 
   return (
+    // if there is an error it will be true, if not, false. {!!error}
     <Container isError={!!error} isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
       <input
