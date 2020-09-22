@@ -23,6 +23,7 @@ export const Container = styled.div<ContainerProps>`
     margin-top: 8px;
   }
 
+  /* Access the properties of the component and when 'isError' or 'isFocused'... is true do this: */
   ${(props) =>
     props.isError &&
     css`
