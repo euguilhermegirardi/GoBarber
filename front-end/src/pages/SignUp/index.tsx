@@ -38,6 +38,7 @@ const SignUp: React.FC = () => {
         });
 
         await schema.validate(data, {
+          // returns all the errors and not only the first one.
           abortEarly: false,
         });
 
