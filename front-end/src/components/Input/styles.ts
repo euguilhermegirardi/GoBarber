@@ -24,6 +24,8 @@ export const Container = styled.div<ContainerProps>`
   }
 
   /* Access the properties of the component and when 'isError' or 'isFocused'... is true do this: */
+  /* Error first. If there is an error the border gets red, if you click in the input 'focus' will be dispatch... */
+  /* ...and the border will be orange. */
   ${(props) =>
     props.isError &&
     css`
@@ -59,6 +61,7 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
+// This styles from 'Error' will be applied in the 'Tooltip' container.
 export const Error = styled(Tooltip)`
   height: 20px;
   margin-left: 16px;
