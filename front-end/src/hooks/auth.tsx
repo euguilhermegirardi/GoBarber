@@ -13,12 +13,15 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: object;
-  signIn(credentials: SignInCredentials): Promise<void>; // because we are using 'async/await'. It returns a Promise.
+  // because we are using 'async/await'. It returns a Promise.
+  signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
 
-const AuthContext = createContext<AuthContextData>({} as AuthContextData); // To initialize an empty object. ({} as AuthContextData)
+// To initialize an empty object, always. ({} as AuthContextData).
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
+//
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     // This logic over here will only execute when the user refresh the page for example.

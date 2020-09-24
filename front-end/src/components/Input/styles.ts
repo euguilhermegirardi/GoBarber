@@ -70,6 +70,7 @@ export const Error = styled(Tooltip)`
     margin: 0;
   }
 
+  /* Tooltip */
   span {
     background: #c53030;
     color: #fff;

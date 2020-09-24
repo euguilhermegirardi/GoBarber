@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  /* Every 'position: absolute' inside of this container will be relative to this container and not to the whole screen */
   position: relative;
 
   span {
@@ -12,12 +13,14 @@ export const Container = styled.div`
     font-weight: 500;
     opacity: 0;
     transition: opacity 0.4s;
-    visibility: hidden;
+    visibility: hidden; /* It hides the element if it is not with opacity: 1 */
 
     position: absolute;
     bottom: calc(100% + 12px);
+    /* Centralize */
     left: 50%;
     transform: translateX(-50%);
+    /* Centralize */
     color: #312e38;
 
     /* Half arrow down */
