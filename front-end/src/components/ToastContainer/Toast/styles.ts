@@ -33,7 +33,7 @@ export const Container = styled(animated.div)<ContainerProps>`
 
   display: flex;
 
-  /* One Toast that before it has another Toast, apply this */
+  /* One Toast that before it has another Toast, apply this! */
   & + div {
     margin-top: 8px;
   }
