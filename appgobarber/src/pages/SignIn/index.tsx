@@ -10,12 +10,15 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
+import * as Yup from "yup";
+
 import { Form } from "@unform/mobile";
 import { FormHandles } from "@unform/core";
-import * as Yup from "yup";
+
 import { useAuth } from "../../hooks/auth";
 
 import getValidationErrors from "../../utils/getValidationErrors";
+
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import logoImg from "../../assets/logo.png";
@@ -39,9 +42,7 @@ const SignIn: React.FC = () => {
 
   const navigation = useNavigation();
 
-  const { signIn, user } = useAuth();
-
-  console.log(user);
+  const { signIn } = useAuth();
 
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {

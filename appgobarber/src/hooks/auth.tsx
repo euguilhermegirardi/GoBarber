@@ -33,7 +33,7 @@ const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
 
   useEffect(() => {
-    async function loadStorageData(): Promise<void> {
+    async function loadStoragedData(): Promise<void> {
       // This logic over here will only execute when the user refresh the page for example.
       const [token, user] = await AsyncStorage.multiGet([
         "@GoBarber:token",
@@ -45,7 +45,7 @@ const AuthProvider: React.FC = ({ children }) => {
       }
     }
 
-    loadStorageData();
+    loadStoragedData();
   }, []);
 
   const signIn = useCallback(async ({ email, password }) => {
@@ -65,7 +65,7 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(async () => {
-    await AsyncStorage.multiRemove(["@GoBarber:token", "@GoBarber:user"]);
+    await AsyncStorage.multiRemove(["@GoBarber:user", "@GoBarber:token"]);
 
     setData({} as AuthState);
   }, []);
