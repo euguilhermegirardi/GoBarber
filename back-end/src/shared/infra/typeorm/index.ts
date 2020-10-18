@@ -1,5 +1,3 @@
-// Connection with the database
+import { createConnections } from 'typeorm';
 
-import { createConnection } from "typeorm";
-
-createConnection();
+createConnections();
