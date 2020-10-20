@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import ICreateNotificationDTO from '../dtos/ICreateNotificationDTO';
 import Notification from '../infra/typeorm/schemas/Notification';
 
