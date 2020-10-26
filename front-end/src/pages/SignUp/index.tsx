@@ -80,7 +80,7 @@ const SignUp: React.FC = () => {
           <img src={logoImg} alt="GoBarber" />
 
           <Form ref={formRef} onSubmit={handleSubmit}>
-            <h1>Login</h1>
+            <h1>Register</h1>
 
             <Input name="name" icon={FiUser} type="text" placeholder="Name" />
             <Input name="email" icon={FiMail} type="text" placeholder="Email" />

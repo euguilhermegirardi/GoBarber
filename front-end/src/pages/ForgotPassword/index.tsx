@@ -11,6 +11,7 @@ import { Container, Content, Background, AnimationContainer } from "./styles";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import getValidationErrors from "../../utils/getValidationErrors";
+import api from "../../services/api";
 
 interface ForgotPasswordFormData {
   email: string;
@@ -36,7 +37,16 @@ const ForgotPassword: React.FC = () => {
           abortEarly: false,
         });
 
-        // recuperacao de senha
+        // Password recovery
+        await api.post('/password/forgot', {
+          email: data.email,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'The password recovery was sent.',
+          description: 'Check your email to reset your new password.'
+        })
 
         // history.push("/dashboard");
       } catch (err) {
