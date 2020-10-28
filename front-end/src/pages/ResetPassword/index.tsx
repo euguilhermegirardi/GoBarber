@@ -26,8 +26,6 @@ const ResetPassword: React.FC = () => {
   const history = useHistory();
   const location = useLocation();
 
-  console.log(location)
-
   const handleSubmit = useCallback(
     async (data: ResetPasswordFormData) => {
       try {
@@ -55,8 +53,8 @@ const ResetPassword: React.FC = () => {
         await api.post('/password/reset', {
           password,
           password_confirmation,
-          token
-        })
+          token,
+        });
 
         history.push("/");
       } catch (err) {

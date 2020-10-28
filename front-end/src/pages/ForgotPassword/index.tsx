@@ -75,7 +75,6 @@ const ForgotPassword: React.FC = () => {
   );
 
   return (
-    <>
       <Container>
         <Content>
           <AnimationContainer>
@@ -102,7 +101,6 @@ const ForgotPassword: React.FC = () => {
         </Content>
         <Background />
       </Container>
-    </>
   );
 };
 
