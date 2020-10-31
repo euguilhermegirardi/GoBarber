@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import DayPicker, { DayModifiers } from 'react-day-picker';
+import 'react-day-picker/lib/style.css';
 
-import { Container, Header, HeaderContent, Profile, Content, Schedule, NextAppointment, Calendar } from './styles';
+import { Container, Header, HeaderContent, Profile, Content, Schedule, NextAppointment, Section, Appointment, Calendar } from './styles';
 import logoImg from '../../assets/logo.svg';
 import { FiClock, FiPower } from "react-icons/fi";
 import { useAuth } from "../../hooks/auth";
@@ -8,7 +10,13 @@ import { useAuth } from "../../hooks/auth";
 const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
 
-  console.log(user)
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handleDayChange = useCallback((day: Date, modifiers: DayModifiers) => {
+    if (modifiers.available) {
+      setSelectedDate(day);
+    }
+  }, [])
 
   return (
     <Container>
@@ -32,15 +40,15 @@ const Dashboard: React.FC = () => {
 
       <Content>
         <Schedule>
-          <h1>Horarios agendados</h1>
+          <h1>Scheduled times</h1>
           <p>
-            <span>Hoje</span>
-            <span>Dia 06</span>
+            <span>Today</span>
+            <span>6th</span>
             <span>Monday</span>
           </p>
 
           <NextAppointment>
-            <strong>Atend a seguir</strong>
+            <strong>Upcoming Hours</strong>
             <div>
               <img src="https://avatars3.githubusercontent.com/u/48716406?s=460&u=775b5cd15d0f20dc3dcc59b4a98b8d6f698d1085&v=4" alt="dasdasd"/>
               <strong>Gira</strong>
@@ -50,8 +58,60 @@ const Dashboard: React.FC = () => {
               </span>
             </div>
           </NextAppointment>
+
+          <Section>
+            <strong>Morning</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img src="https://avatars3.githubusercontent.com/u/48716406?s=460&u=775b5cd15d0f20dc3dcc59b4a98b8d6f698d1085&v=4" alt="dasdasd"/>
+                <strong>Gira</strong>
+              </div>
+            </Appointment>
+          </Section>
+
+          <Section>
+            <strong>Afternoon</strong>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img src="https://avatars3.githubusercontent.com/u/48716406?s=460&u=775b5cd15d0f20dc3dcc59b4a98b8d6f698d1085&v=4" alt="dasdasd"/>
+                <strong>Gira</strong>
+              </div>
+            </Appointment>
+
+            <Appointment>
+              <span>
+                <FiClock />
+                08:00
+              </span>
+
+              <div>
+                <img src="https://avatars3.githubusercontent.com/u/48716406?s=460&u=775b5cd15d0f20dc3dcc59b4a98b8d6f698d1085&v=4" alt="dasdasd"/>
+                <strong>Gira</strong>
+              </div>
+            </Appointment>
+          </Section>
         </Schedule>
-        <Calendar />
+        <Calendar>
+          <DayPicker
+            fromMonth={new Date()}
+            disabledDays={[{ daysOfWeek: [0, 6]}]}
+            modifiers={{ available: { daysOfWeek: [1, 2, 3, 4, 5] } }}
+            onDayClick={handleDayChange}
+            selectedDays={selectedDate}
+          />
+        </Calendar>
       </Content>
     </Container>
   );
