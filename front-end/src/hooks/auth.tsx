@@ -4,6 +4,7 @@ import api from "../services/api";
 interface User {
   id: string;
   name: string;
+  email: string;
   avatar_url: string;
 }
 
@@ -22,6 +23,7 @@ interface AuthContextData {
   // because we are using 'async/await'. It returns a Promise.
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): void;
 }
 
 // To initialize an empty object, always. ({} as AuthContextData).
@@ -66,8 +68,17 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback((user: User) => {
+    localStorage.setItem("@GoBarber:user", JSON.stringify(user));
+
+    setData({
+      token: data.token,
+      user,
+    })
+  }, [setData, data.token])
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
