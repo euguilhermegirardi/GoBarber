@@ -1,28 +1,35 @@
-import React, { ChangeEvent, useCallback, useRef } from "react";
-import { FiArrowLeft, FiMail, FiLock, FiUser, FiCamera } from "react-icons/fi";
-import { Form } from "@unform/web";
-import { FormHandles } from "@unform/core";
-import * as Yup from "yup";
-import { Link, useHistory } from "react-router-dom";
+import React, { useCallback, useRef, ChangeEvent } from 'react';
+import { FiMail, FiUser, FiLock, FiCamera, FiArrowLeft } from 'react-icons/fi';
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
+import * as Yup from 'yup';
+import { useHistory, Link } from 'react-router-dom';
 
-import api from "../../services/api";
-import { useToast } from "../../hooks/toast";
-import getValidationErrors from "../../utils/getValidationErrors";
-import { Container, Content, AvatarInput } from "./styles";
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import { useAuth } from "../../hooks/auth";
+import api from '../../services/api';
+
+import { useToast } from '../../hooks/toast';
+
+import getValidationErrors from '../../utils/getValidationErrors';
+
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+
+import { Container, Content, AvatarInput } from './styles';
+import { useAuth } from '../../hooks/auth';
 
 interface ProfileFormData {
   name: string;
   email: string;
+  old_password: string;
   password: string;
+  password_confirmation: string;
 }
 
 const Profile: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
+
   const { user, updateUser } = useAuth();
 
   const handleSubmit = useCallback(
@@ -31,26 +38,60 @@ const Profile: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required("Name is required"),
+          name: Yup.string().required('Name is required'),
           email: Yup.string()
-            .required("Email is required")
-            .email("Type a valid email"),
-          password: Yup.string().min(6, "At least 6 characters"),
+            .required('Email is required')
+            .email('Type a valid email'),
+          old_password: Yup.string(),
+          password: Yup.string().when('old_password', {
+            is: val => !!val.length,
+            then: Yup.string().required('Required field'),
+            otherwise: Yup.string(),
+          }),
+          password_confirmation: Yup.string()
+            .when('old_password', {
+              is: val => !!val.length,
+              then: Yup.string().required('Required field'),
+              otherwise: Yup.string(),
+            })
+            .oneOf([Yup.ref('password'), undefined], 'It does not match the old password'),
         });
 
         await schema.validate(data, {
-          // returns all the errors and not only the first one.
           abortEarly: false,
         });
 
-        await api.post("/users", data);
+        const {
+          name,
+          email,
+          old_password,
+          password,
+          password_confirmation,
+        } = data;
 
-        history.push("/");
+        const formData = {
+          name,
+          email,
+          ...(old_password
+            ? {
+                old_password,
+                password,
+                password_confirmation,
+              }
+            : {}),
+        };
+
+        const response = await api.put('/profile', formData);
+
+        updateUser(response.data);
+
+        history.push('/dashboard');
 
         addToast({
-          type: "success",
-          title: "Registration Performed!",
-          description: "Now you can login on GoBarber!",
+          type: 'success',
+          title: 'Profile has been updated!',
+          description:
+            'Your information was updated successfully!',
         });
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
@@ -61,34 +102,35 @@ const Profile: React.FC = () => {
           return;
         }
 
-        // dispatch a toast
         addToast({
-          type: "error",
-          title: "Registration error",
-          description: "Something went wrong with the registration!",
+          type: 'error',
+          title: 'Something went wrong.',
+          description: 'Something went wrong when you tried to update your profile.',
         });
       }
     },
-    [addToast, history]
+    [addToast, history, updateUser],
   );
 
-  const handleAvatarChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    if(e.target.files) {
-      const data = new FormData();
+  const handleAvatarChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const data = new FormData();
 
-      data.append('avatar', e.target.files[0]);
+        data.append('avatar', e.target.files[0]);
 
-      api.patch('/users/avatar', data).then(response => {
-        updateUser(response.data);
+        api.patch('/users/avatar', data).then(response => {
+          updateUser(response.data);
 
-        addToast({
-          type: 'success',
-          title: 'Avatar updated!'
-        })
-      });
-      // console.log(e.target.files[0]);
-    }
-  }, [addToast, updateUser])
+          addToast({
+            type: 'success',
+            title: 'Avatar has been updated!',
+          });
+        });
+      }
+    },
+    [addToast, updateUser],
+  );
 
   return (
     <Container>
@@ -99,52 +141,54 @@ const Profile: React.FC = () => {
           </Link>
         </div>
       </header>
+
       <Content>
-          <Form
-            ref={formRef}
-            initialData={{
-              name: user.name,
-              email: user.email,
-            }}
-            onSubmit={handleSubmit}>
-            <AvatarInput>
-              <img src={user.avatar_url} alt={user.name}/>
-              <label htmlFor="avatar">
-                <FiCamera />
-                <input type="file" id="avatar" onChange={handleAvatarChange} />
-              </label>
+        <Form
+          ref={formRef}
+          initialData={{
+            name: user.name,
+            email: user.email,
+          }}
+          onSubmit={handleSubmit}
+        >
+          <AvatarInput>
+            <img src={user.avatar_url} alt={user.name} />
+            <label htmlFor="avatar">
+              <FiCamera />
 
-            </AvatarInput>
+              <input type="file" id="avatar" onChange={handleAvatarChange} />
+            </label>
+          </AvatarInput>
 
-            <h1>Profile</h1>
+          <h1>My profile</h1>
 
-            <Input name="name" icon={FiUser} type="text" placeholder="Name" />
-            <Input name="email" icon={FiMail} type="text" placeholder="Email" />
+          <Input name="name" icon={FiUser} placeholder="Name" />
+          <Input name="email" icon={FiMail} placeholder="Email" />
 
-            <Input
-              containerStyle={{ marginTop: '24px' }}
-              name="old_password"
-              icon={FiLock}
-              type="password"
-              placeholder="Current password"
-            />
+          <Input
+            containerStyle={{ marginTop: 24 }}
+            name="old_password"
+            icon={FiLock}
+            type="password"
+            placeholder="Current password"
+          />
 
-            <Input
-              name="password"
-              icon={FiLock}
-              type="password"
-              placeholder="New password"
-            />
+          <Input
+            name="password"
+            icon={FiLock}
+            type="password"
+            placeholder="New password"
+          />
 
-            <Input
-              name="password_confirmation"
-              icon={FiLock}
-              type="password"
-              placeholder="Confirm password"
-            />
+          <Input
+            name="password_confirmation"
+            icon={FiLock}
+            type="password"
+            placeholder="Confirm the password"
+          />
 
-            <Button type="submit">Confirm all changes</Button>
-          </Form>
+          <Button type="submit">Confirm changes</Button>
+        </Form>
       </Content>
     </Container>
   );
