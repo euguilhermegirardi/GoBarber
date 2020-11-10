@@ -1,3 +1,4 @@
+// 'Exibindo erros no input' - GoStack video.
 import { ValidationError } from "yup";
 
 interface Errors {

@@ -19,10 +19,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input: React.FC<InputProps> = ({ name, containerStyle = {}, icon: Icon, ...rest }) => {
   // inputRef gives us access to the input.
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // Gets all the input properties.
   const { fieldName, defaultValue, error, registerField } = useField(name);
   const [isFocused, setIsFocused] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
+  const [isFilled, setIsFilled] = useState(false); // To keep the icon with color.
 
   useEffect(() => {
     registerField({
@@ -42,20 +42,21 @@ const Input: React.FC<InputProps> = ({ name, containerStyle = {}, icon: Icon, ..
     // If there is a value in the current input? => set true, otherwise false.
     setIsFilled(!!inputRef.current?.value);
     // if (inputRef.current?.value) {
-    //   setIsField(true);
+    //   setIsFilled(true);
     // } else {
-    //   setIsField(false);
+    //   setIsFilled(false);
     // }
   }, []);
 
   return (
-    // if there is an error it will be true, if not, false. {!!error}
+    // If there is an error it will be true, if not, false. {!!error}
+    // To create 'isError', 'isFilled', isFocused' properties, use interface (styles).
     <Container style={containerStyle} isError={!!error} isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
       <input
         ref={inputRef}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
+        onFocus={handleInputFocus} // Gets when the input receives focus.
+        onBlur={handleInputBlur} // Gets when the input receives blur.
         defaultValue={defaultValue}
         {...rest}
       />

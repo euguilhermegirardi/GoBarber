@@ -39,6 +39,7 @@ export const Container = styled.div<ContainerProps>`
       border-color: #ff9000;
     `}
 
+  /* Icon */
   ${(props) =>
     props.isFilled &&
     css`
@@ -46,7 +47,7 @@ export const Container = styled.div<ContainerProps>`
     `}
 
   input {
-    flex: 1;
+    flex: 1; /* Fill up all possible space */
     background: transparent;
     border: 0;
     color: #f4ede8;

@@ -21,7 +21,7 @@ export const Content = styled.div`
 `;
 
 export const Background = styled.div`
-  flex: 1;
+  flex: 1; /* Fill up all the space after those 700px (max-width) */
   background: url(${signInBackground}) no-repeat center;
   background-size: cover;
 `;
@@ -68,6 +68,7 @@ export const AnimationContainer = styled.div`
     }
   }
 
+  /* Gets only the anchors which is outside of the form. Fist level of the content */
   > a {
     color: #ff9000;
     display: flex;

@@ -20,7 +20,7 @@ interface SignUpFormData {
 }
 
 const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null); // To access 'formRef.current?.setErrors({})'.
   const { addToast } = useToast();
   const history = useHistory();
 
@@ -38,8 +38,7 @@ const SignUp: React.FC = () => {
         });
 
         await schema.validate(data, {
-          // returns all the errors and not only the first one.
-          abortEarly: false,
+          abortEarly: false, // returns all the errors and not only the first one.
         });
 
         await api.post("/users", data);
