@@ -30,21 +30,24 @@ export const Container = styled.div<ContainerProps>`
     props.isError &&
     css`
       color: #c53030;
-    `}
+    `
+  }
 
   ${(props) =>
     props.isFocused &&
     css`
       color: #ff9000;
       border-color: #ff9000;
-    `}
+    `
+  }
 
   /* Icon */
   ${(props) =>
     props.isFilled &&
     css`
       color: #ff9000;
-    `}
+    `
+  }
 
   input {
     flex: 1; /* Fill up all possible space */

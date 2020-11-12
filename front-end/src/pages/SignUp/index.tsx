@@ -20,7 +20,7 @@ interface SignUpFormData {
 }
 
 const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null); // To access 'formRef.current?.setErrors({})'.
+  const formRef = useRef<FormHandles>(null); // "FormHandles" to access 'formRef.current?.setErrors({})'.
   const { addToast } = useToast();
   const history = useHistory();
 

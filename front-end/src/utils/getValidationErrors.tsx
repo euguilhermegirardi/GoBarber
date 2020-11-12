@@ -8,7 +8,8 @@ interface Errors {
 export default function getValidationErrors(err: ValidationError): Errors {
   const validationErrors: Errors = {};
 
-  // 'inner' is inside of the 'unform'. Same to 'path' and 'message',
+  // 'inner' is inside of the 'unform'. Same to 'path' and 'message'
+  // All of them comes from 'err' which comes from 'ValidationError' from yup.
   err.inner.forEach((error) => {
     validationErrors[error.path] = error.message;
   });

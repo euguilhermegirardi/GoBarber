@@ -19,7 +19,7 @@ interface SignInFormData {
 }
 
 const SignIn: React.FC = () => {
-  const formRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null); // "FormHandles" to access 'formRef.current?.setErrors({})'.
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
