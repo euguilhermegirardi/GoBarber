@@ -20,15 +20,18 @@ interface SignInCredentials {
 
 interface AuthContextData {
   user: User;
-  signIn(credentials: SignInCredentials): Promise<void>;
-  signOut(): void;
+  signIn(credentials: SignInCredentials): Promise<void>; // Promise because we are using async/await, so async = Promise (return).
+  signOut(): void; // signOut doesn't receive any param and no return (void).
   updateUser(user: User): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
+  // After set these two items in LocalStorage, create a state to handle these information.
+  // Doing that I can share the info with the AuthContext.Provider, instead of use LocalStorage in somewhere else that I'd like to.
   const [data, setData] = useState<AuthState>(() => {
+    // This logic here, until 'return {} as AuthState;' will work only if the user refreshes the page.
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
 
@@ -53,7 +56,9 @@ const AuthProvider: React.FC = ({ children }) => {
       email,
       password,
     });
+    console.log('Login data: ', response.data);
 
+    // Get the info to set in 'LocalStorage'.
     const { token, user } = response.data;
 
     localStorage.setItem('@GoBarber:token', token);
