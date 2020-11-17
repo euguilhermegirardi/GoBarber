@@ -31,12 +31,14 @@ const ToastProvider: React.FC = ({ children }) => {
         description,
       };
 
+      // 'state' = old messages that I had and the new toast.
       setMessages((state) => [...state, toast]);
     },
     []
   );
 
   const removeToast = useCallback((id: string) => {
+    // 'state' = currently message state.
     setMessages((state) => state.filter((message) => message.id !== id));
   }, []);
 

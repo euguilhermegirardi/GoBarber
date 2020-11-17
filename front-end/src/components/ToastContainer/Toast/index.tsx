@@ -24,10 +24,12 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
   const { removeToast } = useToast();
 
   useEffect(() => {
+    // Remove toast 3s as soon as it renders on the screen.
     const timer = setTimeout(() => {
       removeToast(message.id);
     }, 3000);
 
+    // Cancel the timer to do nothing with the setTimeout if the user closes the toast.
     return () => {
       clearTimeout(timer);
     };
